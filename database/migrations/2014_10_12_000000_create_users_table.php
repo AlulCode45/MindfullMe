@@ -11,13 +11,26 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('pengguna', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nama');
+            $table->string('foto_profile')->default('default-profile.jpg');
+            $table->string('tempat_lahir');
+            $table->date('tanggal_lahir');
+            $table->text('alamat')->nullable();
+
+            $table->text('deskripsi_diri')->nullable();
+            $table->string('lulusan_universitas')->nullable();
+
+            $table->string('whatsapp');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
+
+            $table->enum('status_member', ['member', 'guest'])->default('guest');
+            $table->date('akhir_member')->nullable();
+
+            $table->enum('role', ['pengguna', 'psikiater'])->default('pengguna');
+            $table->enum('status_akun', ['belum_terverifikasi', 'pending', 'terverifikasi'])->default('belum_terverifikasi');
             $table->timestamps();
         });
     }
@@ -27,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('pengguna');
     }
 };
